@@ -1,0 +1,17 @@
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.exe
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\appsettings.Development.json
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\appsettings.json
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\xunit.abstractions.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\xunit.runner.visualstudio.testadapter.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.runtimeconfig.json
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.pdb
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Microsoft.OpenApi.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\xunit.assert.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\xunit.core.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\xunit.execution.dotnet.dll
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.xml
+C:\Users\gaddario\Desktop\Proyectos\Productos-MELI\Api-Productos-MELI\out\Api_Productos_MELI.deps.json
