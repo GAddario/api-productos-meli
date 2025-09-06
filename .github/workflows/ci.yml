@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
 
     - name: Check formatting
-      run: dotnet format --verify-no-changes --severity error
+      run:  dotnet format Api-Productos-MELI.sln --verify-no-changes --severity error
 
     - name: Build project
       run: dotnet build --no-restore --configuration Release

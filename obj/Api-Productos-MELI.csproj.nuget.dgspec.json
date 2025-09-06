@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\Api-Productos-MELI.csproj": {}
+    "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\Api-Productos-MELI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\Api-Productos-MELI.csproj": {
+    "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\Api-Productos-MELI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
+        "projectUniqueName": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
         "projectName": "Api_Productos_MELI",
-        "projectPath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
+        "projectPath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
         "packagesPath": "C:\\Users\\gaddario\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\obj\\",
+        "outputPath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gaddario\\AppData\\Roaming\\NuGet\\NuGet.Config",

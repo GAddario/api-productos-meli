@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3qT73Hf0PvLUs014J0AT/S+cpfIVqBf4i66rI5K9fLlAlb6xrO0hv1636YNziV1pQZSXRw99oj8SVf4sQ9BhIw==",
+  "dgSpecHash": "MLcRCfYS7Bw7vEQZU1QXqVIEhTK9HKOb/WXPWXlSz6jHFI+lx50BJ+ChV5NuQU1KZR8YOfBsXCjoMCvZnMY3UA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Productos-MELI\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
+  "projectFilePath": "C:\\Users\\gaddario\\Desktop\\Proyectos\\Api-Productos-MELI\\Api-Productos-MELI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gaddario\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\gaddario\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
