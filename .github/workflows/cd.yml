@@ -2,7 +2,7 @@ name: CD - Deploy with Docker Compose (self-hosted)
 
 on:
   push:
-    branches: [ main ]   # despliega sólo cuando hay push/merge a main
+    branches: [ master ]  
 
 concurrency:
   group: cd-${{ github.ref }}
