@@ -1,8 +1,11 @@
+# cd pipeline v2 - fuerza de diff
 name: CD - Deploy with Docker Compose (self-hosted)
-
+...
 on:
   push:
-    branches: [ master ]  
+    branches:
+      - master
+      - main
 
 concurrency:
   group: cd-${{ github.ref }}
@@ -17,18 +20,78 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Show commit info
+        shell: powershell
         run: |
-          echo "Commit: $GITHUB_SHA"
+          Write-Host "Commit: $env:GITHUB_SHA"
           git log -1 --pretty=oneline
 
-      - name: Docker Compose Up
+      - name: Docker Compose Pull (ignore errors)
+        shell: powershell
         run: |
-          docker compose pull || true
-          docker compose build --no-cache
-          docker compose up -d
-          docker image prune -f
+          try { docker compose pull } catch { Write-Host "pull failed, continuing" }
 
-      - name: Health check
+      - name: Docker Compose Build
+        shell: powershell
+        run: docker compose build --no-cache
+
+      - name: Docker Compose Up
+        shell: powershell
+        run: docker compose up -d
+
+      - name: Docker Compose Status
+        shell: powershell
         run: |
-          powershell -c "Start-Sleep -Seconds 5"
-          curl -I http://localhost:5000 || exit 1
+          docker compose ps
+          docker ps --format "table {{.Names}}\t{{.Ports}}\t{{.Status}}"
+
+      - name: Show container logs (last 200 lines)
+        shell: powershell
+        run: docker logs --tail 200 api-productos-meli
+
+      - name: Health check (detect port from logs + retry)
+        shell: powershell
+        run: |
+          $listenLine = (docker logs --tail 400 api-productos-meli 2>$null) | Select-String -Pattern 'Now listening on: http://0\.0\.0\.0:(\d+)' -SimpleMatch:$false | Select-Object -Last 1
+          if ($listenLine) {
+            $m = [regex]::Match($listenLine.ToString(), '0\.0\.0\.0:(\d+)')
+            $detectedPort = $m.Groups[1].Value
+            Write-Host "Detectado desde logs: puerto $detectedPort"
+          } else {
+            $detectedPort = ""
+            Write-Host "No se detectó puerto en logs."
+          }
+          $ports = @()
+          if ($detectedPort) { $ports += [int]$detectedPort }
+          $ports += 8080,5000,80 | Select-Object -Unique
+          $paths = @('/swagger/index.html','/swagger/v1/swagger.json','/weatherforecast','/')
+          $ok = $false
+          for ($t=0; $t -lt 24 -and -not $ok; $t++) {
+            foreach ($p in $ports) {
+              foreach ($path in $paths) {
+                $url = "http://localhost:$p$path"
+                try {
+                  $resp = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
+                  if ($resp.StatusCode -ge 200 -and $resp.StatusCode -lt 400) {
+                    Write-Host "OK: $url -> $($resp.StatusCode)"
+                    $ok = $true; break
+                  } else {
+                    Write-Host "HTTP $($resp.StatusCode): $url"
+                  }
+                } catch {
+                  Write-Host "Aún no: $url"
+                }
+              }
+              if ($ok) { break }
+            }
+            if (-not $ok) { Start-Sleep -Seconds 5 }
+          }
+          if (-not $ok) {
+            Write-Host "---- Últimos 200 logs del contenedor para diagnóstico ----"
+            docker logs --tail 200 api-productos-meli
+            throw "Health check failed (no endpoint/puerto devolvió 2xx/3xx)"
+          }
+
+      - name: Docker Image Prune
+        if: always()
+        shell: powershell
+        run: docker image prune -f
