@@ -179,5 +179,24 @@ namespace ApiComprasMELI.Controllers
             }
         }
 
+        [HttpGet("Error")]
+        public IActionResult GetError()
+        {
+            // Captura un mensaje en Sentry
+            SentrySdk.CaptureMessage("Hola desde mi API!");
+
+            // Forzar un error para ver el stacktrace
+            throw new Exception("Error de prueba - Sentry funcionando!");
+        }
+
+        [HttpGet("Error 2")]
+        public IActionResult GetErrorPrueba2()
+        {
+            // Captura un mensaje en Sentry
+            SentrySdk.CaptureMessage("Hola, esto es una prueba!");
+
+            // Forzar un error para ver el stacktrace
+            throw new Exception("Error de prueba - Sentry funcionando OK!");
+        }
     }
 }
