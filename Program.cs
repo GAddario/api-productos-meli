@@ -1,21 +1,31 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// IntegraciÃ³n con Sentry
+builder.WebHost.UseSentry(o =>
+{
+    o.Dsn = "https://d92ae720a85be5d8c42c6c58f0f9ba01@o4510127838068736.ingest.us.sentry.io/4510127872016384";
+    o.Debug = true;              // logs internos de Sentry en consola
+    o.TracesSampleRate = 1.0;    // captura el 100% de transacciones
+});
+
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
+
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Agrega la generación y lectura de comentarios XML para Swagger
+// Agrega la generaciï¿½n y lectura de comentarios XML para Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // ?? Información personalizada para Swagger UI
+    // ?? Informaciï¿½n personalizada para Swagger UI
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "API - Gestión de Productos",
+        Title = "API - Gestiï¿½n de Productos",
         Version = "v1",
-        Description = "Esta API permite realizar operaciones CRUD sobre productos dentro del sistema de compras de Mercado Libre. Soporta creación, consulta, actualización y eliminación de productos.",
+        Description = "Esta API permite realizar operaciones CRUD sobre productos dentro del sistema de compras de Mercado Libre. Soporta creaciï¿½n, consulta, actualizaciï¿½n y eliminaciï¿½n de productos.",
     });
 
-    // Incluir comentarios XML para documentación Swagger
+    // Incluir comentarios XML para documentaciï¿½n Swagger
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
@@ -29,8 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API - Gestión de Productos v1");
-        c.DocumentTitle = "Documentación API - Gestión de Productos";
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API - Gestiï¿½n de Productos v1");
+        c.DocumentTitle = "Documentaciï¿½n API - Gestiï¿½n de Productos";
     });
 }
 

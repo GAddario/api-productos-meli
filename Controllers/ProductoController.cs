@@ -148,7 +148,7 @@ namespace ApiComprasMELI.Controllers
         /// <response code="200">Producto eliminado correctamente.</response>
         /// <response code="400">El ID es inválido o el producto no existe.</response>
         /// <response code="500">Error interno del servidor.</response>
-        [HttpDelete("Delete")]
+        [HttpDelete("   ")]
         [ProducesResponseType(typeof(RespuestaConContenido<object>), 200)]
         [ProducesResponseType(typeof(RespuestaConContenido<object>), 400)]
         [ProducesResponseType(typeof(RespuestaConContenido<object>), 500)]
@@ -179,5 +179,24 @@ namespace ApiComprasMELI.Controllers
             }
         }
 
+        [HttpGet("Error")]
+        public IActionResult GetError()
+        {
+            // Captura un mensaje en Sentry
+            SentrySdk.CaptureMessage("Hola desde mi API!");
+
+            // Forzar un error para ver el stacktrace
+            throw new Exception("Error de prueba - Sentry funcionando!");
+        }
+
+        [HttpGet("Error2")]
+        public IActionResult GetErrorPrueba2()
+        {
+            // Captura un mensaje en Sentry
+            SentrySdk.CaptureMessage("Hola, esto es una prueba!");
+
+            // Forzar un error para ver el stacktrace
+            throw new Exception("Error de prueba - Sentry funcionando OK!");
+        }
     }
 }
