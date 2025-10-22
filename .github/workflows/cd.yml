@@ -2,28 +2,40 @@
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
   deploy:
-    runs-on: [self-hosted, Windows]   # Runner self-hosted en Windows
-    defaults:
-      run:
-        shell: pwsh
+    runs-on: [self-hosted, Windows, X64]
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Docker Compose down & up
+      - name: Echo environment
+        shell: powershell
         run: |
-          docker compose down
+          Write-Host "PS Version:"
+          $PSVersionTable
+          Write-Host "Workspace: $env:GITHUB_WORKSPACE"
+          Write-Host "PATH: $env:PATH"
+
+      - name: Verify Docker/Compose
+        shell: powershell
+        run: |
+          docker version
+          docker compose version
+
+      - name: Docker Compose down & up
+        shell: powershell
+        run: |
+          docker compose down --remove-orphans
           docker compose up -d --build
-          docker image prune -f
+          docker compose ps
 
       - name: Esperar health (PowerShell)
+        shell: powershell
         run: |
-          Write-Host "Esperando health=200..."
           $ok = $false
           for ($i=1; $i -le 20; $i++) {
             try {
@@ -33,4 +45,5 @@ jobs:
             Write-Host "Intento $i/20 - esperando 3s..."
             Start-Sleep -Seconds 3
           }
-          if (-not $ok) { Write-Error "❌ No quedó healthy"; exit 1 } else { Write-Host "✅ Health OK" }
+          if (-not $ok) { Write-Error "❌ No quedó healthy"; exit 1 }
+          Write-Host "✅ Health OK"
