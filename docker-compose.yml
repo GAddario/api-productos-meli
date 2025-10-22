@@ -1,12 +1,32 @@
+#services:
+#  api-productos:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+
+#      - "5000:5000"              # antes: "5000:8080"
+#    environment:
+ #     - ASPNETCORE_ENVIRONMENT=Production
+
+#    restart: unless-stopped
+
+
 services:
   api-productos:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-
-      - "5000:8080"
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - EnableSwagger=true
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     restart: unless-stopped

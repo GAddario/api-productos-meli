@@ -17,6 +17,7 @@ RUN dotnet publish Api-Productos-MELI.csproj -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
 
 WORKDIR /app
+RUN apk add --no-cache curl
 COPY --from=build /app/out .
 
 EXPOSE 5000

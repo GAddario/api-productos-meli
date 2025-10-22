@@ -8,24 +8,21 @@ builder.WebHost.UseSentry(o =>
     o.TracesSampleRate = 1.0;    // captura el 100% de transacciones
 });
 
+// Escuchar en 0.0.0.0:5000
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
-// Add services to the container.
+// Servicios
 builder.Services.AddControllers();
-
-// Agrega la generaci�n y lectura de comentarios XML para Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // ?? Informaci�n personalizada para Swagger UI
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "API - Gesti�n de Productos",
+        Title = "API - Gestión de Productos",
         Version = "v1",
-        Description = "Esta API permite realizar operaciones CRUD sobre productos dentro del sistema de compras de Mercado Libre. Soporta creaci�n, consulta, actualizaci�n y eliminaci�n de productos.",
+        Description = "Esta API permite realizar operaciones CRUD sobre productos dentro del sistema de compras de Mercado Libre. Soporta creación, consulta, actualización y eliminación de productos.",
     });
 
-    // Incluir comentarios XML para documentaci�n Swagger
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
@@ -33,18 +30,28 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// (NUEVO) Bandera para habilitar Swagger también en prod
+var enableSwagger = app.Configuration.GetValue<bool>("EnableSwagger", false);
+
+// Swagger
+if (app.Environment.IsDevelopment() || enableSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API - Gesti�n de Productos v1");
-        c.DocumentTitle = "Documentaci�n API - Gesti�n de Productos";
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API - Gestión de Productos v1");
+        c.DocumentTitle = "Documentación API - Gestión de Productos";
     });
 }
 
-app.UseHttpsRedirection();
+// HTTPS redirection 
+
 app.UseAuthorization();
+
+// (NUEVO) Endpoint de health ANTES del Run
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
 app.MapControllers();
+
+
 app.Run();
