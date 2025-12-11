@@ -19,7 +19,6 @@ RUN dotnet publish Api-Productos-MELI.csproj \
     --no-restore \
     -p:PublishTrimmed=true \
     -p:TrimMode=Link \
-    -p:PublishReadyToRun=true
 
 # -----------------------------------------
 # STAGE 2 — Runtime
