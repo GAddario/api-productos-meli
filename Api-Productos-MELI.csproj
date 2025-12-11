@@ -9,6 +9,7 @@
     <AssemblyName>Api_Productos_MELI</AssemblyName>
     <RootNamespace>Api_Productos_MELI</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
