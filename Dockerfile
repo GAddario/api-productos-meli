@@ -1,24 +1,30 @@
-# Etapa 1: Construcción de la aplicación
+# -----------------------------------------
+# STAGE 1 — Build
+# -----------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-WORKDIR /app
+WORKDIR /src
 
-# Copiar el proyecto principal y restaurar dependencias
 COPY Api-Productos-MELI.csproj ./
-RUN dotnet restore Api-Productos-MELI.csproj
+RUN dotnet restore Api-Productos-MELI.csproj -r linux-x64
 
-# Copiar el resto del código
 COPY . .
 
-# Publicar solo el proyecto de la API
-RUN dotnet publish Api-Productos-MELI.csproj -c Release -o out
+RUN dotnet publish Api-Productos-MELI.csproj -c Release -o /app/publish \
+    -r linux-x64 --self-contained false
 
-# Etapa 2: Imagen para producción
+# -----------------------------------------
+# STAGE 2 — Runtime
+# -----------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
 
 WORKDIR /app
-RUN apk add --no-cache curl
-COPY --from=build /app/out .
+
+RUN addgroup -S dotnet && adduser -S dotnet -G dotnet
+USER dotnet
+
+COPY --from=build /app/publish .
 
 EXPOSE 5000
+
 ENTRYPOINT ["dotnet", "Api_Productos_MELI.dll"]
