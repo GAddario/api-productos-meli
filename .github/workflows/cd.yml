@@ -5,45 +5,25 @@ on:
     branches: [ master ]
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, Windows, X64]
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Echo environment
-        shell: powershell
-        run: |
-          Write-Host "PS Version:"
-          $PSVersionTable
-          Write-Host "Workspace: $env:GITHUB_WORKSPACE"
-          Write-Host "PATH: $env:PATH"
+      - name: Login DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Verify Docker/Compose
-        shell: powershell
-        run: |
-          docker version
-          docker compose version
+      - name: Build & Push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: gaddario/api-productos-meli:latest
 
-      - name: Docker Compose down & up
-        shell: powershell
-        run: |
-          docker compose down --remove-orphans
-          docker compose up -d --build
-          docker compose ps
-
-      - name: Esperar health (PowerShell)
-        shell: powershell
-        run: |
-          $ok = $false
-          for ($i=1; $i -le 20; $i++) {
-            try {
-              $res = Invoke-WebRequest -UseBasicParsing -Uri http://localhost:5000/health -TimeoutSec 5
-              if ($res.StatusCode -eq 200) { $ok = $true; break }
-            } catch { }
-            Write-Host "Intento $i/20 - esperando 3s..."
-            Start-Sleep -Seconds 3
-          }
-          if (-not $ok) { Write-Error "❌ No quedó healthy"; exit 1 }
-          Write-Host "✅ Health OK"
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
